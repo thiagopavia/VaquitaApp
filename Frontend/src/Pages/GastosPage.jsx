@@ -4,7 +4,7 @@ import emailjs from "@emailjs/browser";
 import { VaquitaContext } from "../Context/VaquitaContext.js";
 
 // Reemplazá estos 3 valores con los de tu cuenta de EmailJS
-const SERVICE_ID = "service_beq9904";
+const SERVICE_ID = "service_beq9904cd";
 const TEMPLATE_ID = "template_qgytdm8";
 const PUBLIC_KEY = "7HzpzuOl3CUjrvwup";
 
