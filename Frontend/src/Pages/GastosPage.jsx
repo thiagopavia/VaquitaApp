@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import emailjs from "@emailjs/browser";
 import { VaquitaContext } from "../Context/VaquitaContext.js";
 
-const SERVICE_ID = "service_beq9904cd";
+const SERVICE_ID = "service_beq9904";
 const TEMPLATE_ID = "template_qgytdm8";
 const PUBLIC_KEY = "7HzpzuOl3CUjrvwup";
 
