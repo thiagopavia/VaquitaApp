@@ -1,6 +1,12 @@
 import { useContext, useState } from "react";
 import { toast } from "react-toastify";
+import emailjs from "@emailjs/browser";
 import { VaquitaContext } from "../Context/VaquitaContext.js";
+
+// Reemplazá estos 3 valores con los de tu cuenta de EmailJS
+const SERVICE_ID = "service_beq9904";
+const TEMPLATE_ID = "template_qgytdm8";
+const PUBLIC_KEY = "7HzpzuOl3CUjrvwup";
 
 export default function GastosPage() {
   const { usuario, grupoActivo, gastos, agregarGasto } = useContext(VaquitaContext);
@@ -8,6 +14,10 @@ export default function GastosPage() {
   const [importe, setImporte] = useState("");
   const [rubro, setRubro] = useState("");
   const [pagadorId, setPagadorId] = useState("");
+
+  const [emailInvitado, setEmailInvitado] = useState("");
+  const [enviandoMail, setEnviandoMail] = useState(false);
+  const [mostrarQR, setMostrarQR] = useState(false);
 
   if (!grupoActivo) {
     return (
@@ -23,6 +33,32 @@ export default function GastosPage() {
   const copiarLink = () => {
     navigator.clipboard.writeText(linkInvitacion);
     toast.info("Link de invitación copiado al portapapeles");
+  };
+
+  const handleInvitarMail = async (e) => {
+    e.preventDefault();
+    if (!emailInvitado.trim()) return;
+
+    setEnviandoMail(true);
+    try {
+      await emailjs.send(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        {
+          to_email: emailInvitado.trim(),
+          grupo_nombre: grupoActivo.descripcion,
+          link_invitacion: linkInvitacion,
+        },
+        PUBLIC_KEY
+      );
+      toast.success(`Invitación enviada a ${emailInvitado}`);
+      setEmailInvitado("");
+    } catch (error) {
+      console.error("Error al enviar email:", error);
+      toast.error("No se pudo enviar el correo. Revisá tus claves de EmailJS.");
+    } finally {
+      setEnviandoMail(false);
+    }
   };
 
   const formatearDescripcion = (desc) => {
@@ -67,10 +103,55 @@ export default function GastosPage() {
             {grupoActivo.integrantes?.map((i) => i.apodo || i.nombre).join(", ")}
           </small>
         </div>
-        <button onClick={copiarLink} className="btn btn-sm btn-outline-primary">
-          Copiar link para invitar
-        </button>
+
+        <div className="d-flex gap-2 flex-wrap align-items-center">
+          <form onSubmit={handleInvitarMail} className="d-flex gap-1">
+            <input
+              type="email"
+              className="form-control form-control-sm"
+              placeholder="Email del invitado..."
+              value={emailInvitado}
+              onChange={(e) => setEmailInvitado(e.target.value)}
+              required
+            />
+            <button
+              type="submit"
+              className="btn btn-sm btn-outline-danger"
+              disabled={enviandoMail}
+            >
+              {enviandoMail ? "Enviando..." : "Invitar"}
+            </button>
+          </form>
+
+          <button
+            type="button"
+            onClick={() => setMostrarQR(!mostrarQR)}
+            className="btn btn-sm btn-outline-dark"
+          >
+            {mostrarQR ? "Ocultar QR" : "QR"}
+          </button>
+
+          <button onClick={copiarLink} className="btn btn-sm btn-outline-primary">
+            Copiar link
+          </button>
+        </div>
       </div>
+
+      {mostrarQR && (
+        <div className="card mb-4 text-center p-3 shadow-sm">
+          <h6 className="fw-bold mb-2">
+            Escaneá para unirte a "{grupoActivo.descripcion}"
+          </h6>
+          <div>
+            <img
+              src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(linkInvitacion)}`}
+              alt="Código QR de invitación"
+              className="img-thumbnail"
+            />
+          </div>
+          <small className="text-muted mt-2">{linkInvitacion}</small>
+        </div>
+      )}
 
       <div className="card mb-4 shadow-sm">
         <div className="card-body">
