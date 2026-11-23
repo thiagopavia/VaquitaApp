@@ -25,7 +25,7 @@ export default function LoginPage() {
   return (
     <div className="container mt-5" style={{ maxWidth: "450px" }}>
       <div className="card shadow-sm p-4">
-        <h3 className="text-center mb-3">🐮 Ingresar a Vaquita</h3>
+        <h3 className="text-center mb-3"> Ingresar a Vaquita</h3>
         <form onSubmit={handleSubmit}>
           <div className="mb-2">
             <label className="form-label">Nombre</label>
