@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import useLocalStorage from "../Hooks/useLocalStorage.js";
 import { VaquitaContext } from "./VaquitaContext.js";
 
-const API_URL = "http://localhost:5137/api";
+const API_URL = "https://vaquitaapp.onrender.com/api";
 
 export function VaquitaProvider({ children }) {
   const [usuario, setUsuario] = useLocalStorage("vaquita_user", null);
