@@ -61,7 +61,7 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-// Crear la base de datos SQLite automáticamente si no existe
+// La base de datos SQLite 
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
