@@ -5,7 +5,7 @@ import { VaquitaContext } from "../Context/VaquitaContext.js";
 export default function ResumenPage() {
   const { grupoActivo, resumen, saldarDeuda, cerrarGrupo } = useContext(VaquitaContext);
 
-  // Estados para los modales de Bootstrap
+  // Estados para los modals de Bootstrap
   const [deudaSeleccionada, setDeudaSeleccionada] = useState(null);
   const [montoPago, setMontoPago] = useState("");
   const [mostrarModalCerrar, setMostrarModalCerrar] = useState(false);
@@ -151,7 +151,7 @@ export default function ResumenPage() {
         </div>
       </div>
 
-      {/* Modal Bootstrap: Registrar transferencia / saldar deuda */}
+      {/* Registrar transferencia / saldar deuda */}
       {deudaSeleccionada && (
         <div
           className="modal d-block"
@@ -210,7 +210,7 @@ export default function ResumenPage() {
         </div>
       )}
 
-      {/* Modal Bootstrap: Confirmar cierre de grupo */}
+      {/* Confirmar cierre de grupo */}
       {mostrarModalCerrar && (
         <div
           className="modal d-block"
